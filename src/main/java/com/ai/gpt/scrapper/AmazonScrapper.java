@@ -17,6 +17,7 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 
 @Service
 @AllArgsConstructor
@@ -26,7 +27,7 @@ public class AmazonScrapper implements Scrapper {
     private final ChromeOptions chromeOptions;
 
     @Override
-    public List<Product> scrap(String itemName) {
+    public Stream<Product> scrap(String itemName) {
         String formattedItemName = itemName.strip().replace(" ", "+");
         String formattedProductURL = PRODUCT_URL.replace("{productName}", formattedItemName);
         WebDriver webDriver = new ChromeDriver(chromeOptions);
@@ -37,11 +38,11 @@ public class AmazonScrapper implements Scrapper {
             wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//div[@class='puisg-row']")));
             return initiateScrapping(webDriver);
         } catch (Exception ex) {
-            return List.of();
+            return Stream.of();
         }
     }
 
-    private List<Product> initiateScrapping(WebDriver webDriver) {
+    private Stream<Product> initiateScrapping(WebDriver webDriver) {
 
         final List<WebElement> elements = webDriver.findElements(By.cssSelector("div.puisg-row"));
 
@@ -67,7 +68,6 @@ public class AmazonScrapper implements Scrapper {
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .filter(Product::isValidProduct)
-                .limit(5)
-                .toList();
+                .limit(2);
     }
 }

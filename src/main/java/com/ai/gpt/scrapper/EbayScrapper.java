@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 @Component
 @AllArgsConstructor
@@ -22,7 +23,7 @@ public class EbayScrapper implements Scrapper {
     private final ChromeOptions chromeOptions;
 
     @Override
-    public List<Product> scrap(String itemName) {
+    public Stream<Product> scrap(String itemName) {
         String formattedItemName = itemName.strip().replace(" ", "+");
         String formattedProductURL = PRODUCT_URL.replace("{productName}", formattedItemName);
         WebDriver webDriver = new ChromeDriver(chromeOptions);
@@ -54,7 +55,6 @@ public class EbayScrapper implements Scrapper {
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .filter(Product::isValidProduct)
-                .limit(5)
-                .toList();
+                .limit(2);
     }
 }
