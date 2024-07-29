@@ -11,6 +11,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -42,7 +43,7 @@ public class ScrapperService {
         }
     }
 
-    public List<Product> scrapProductDetails(final String productName) {
+    public List<Product> scrapProductDetails(final String productName, String sortByPrice) {
         final List<Product> productList = new ArrayList<>();
         this.scrappers.scrapperList().forEach(scrapper -> {
             final List<Product> tempProducts = scrapper.scrap(productName);
@@ -51,6 +52,8 @@ public class ScrapperService {
                 productList.add(product);
             });
         });
+        Comparator<Product> comparator = Comparator.comparing(Product::getProductPrice);
+        productList.sort(sortByPrice.equalsIgnoreCase("asc")? comparator: comparator.reversed());
         return productList;
     }
 }

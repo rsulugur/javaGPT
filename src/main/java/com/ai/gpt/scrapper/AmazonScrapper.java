@@ -1,6 +1,7 @@
 package com.ai.gpt.scrapper;
 
 import com.ai.gpt.model.Product;
+import com.ai.gpt.utils.PriceConverter;
 import com.ai.gpt.utils.URLShortener;
 import lombok.AllArgsConstructor;
 import org.openqa.selenium.By;
@@ -53,7 +54,7 @@ public class AmazonScrapper implements Scrapper {
                         product.setProductName(textElement.getText());
 
                         WebElement priceElement = webElement.findElement(new By.ByXPath(".//span[@class='a-price-whole']"));
-                        product.setProductPrice(priceElement.getText());
+                        product.setProductPrice(PriceConverter.convertPrice(priceElement.getText()));
 
                         WebElement productURL = webElement.findElement(By.cssSelector("a.a-link-normal"));
                         product.setProductUrl(URLShortener.shortenURL(productURL.getAttribute("href")));

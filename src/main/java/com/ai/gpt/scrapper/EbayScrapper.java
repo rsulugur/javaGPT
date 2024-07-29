@@ -1,6 +1,7 @@
 package com.ai.gpt.scrapper;
 
 import com.ai.gpt.model.Product;
+import com.ai.gpt.utils.PriceConverter;
 import com.ai.gpt.utils.URLShortener;
 import lombok.AllArgsConstructor;
 import org.openqa.selenium.By;
@@ -40,7 +41,7 @@ public class EbayScrapper implements Scrapper {
                         product.setProductName(textElement.getText());
 
                         WebElement priceElement = webElement.findElement(By.cssSelector(".s-item__price"));
-                        product.setProductPrice(priceElement.getText());
+                        product.setProductPrice(PriceConverter.convertPrice(priceElement.getText()));
 
                         WebElement productURL = webElement.findElement(By.cssSelector(".s-item__link"));
                         product.setProductUrl(URLShortener.shortenURL(productURL.getAttribute("href")));

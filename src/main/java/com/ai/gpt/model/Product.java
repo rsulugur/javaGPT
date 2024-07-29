@@ -24,12 +24,12 @@ public class Product {
     private String productName;
     @Column(length = 250)
     private String productUrl;
-    private String productPrice;
+    private Float productPrice;
     private String productDescription;
     private Date createdAt = new Date();
 
     @JsonIgnore
     public boolean isValidProduct() {
-        return Objects.nonNull(this.productName) && Objects.nonNull(this.productPrice) && !this.productName.isEmpty() && !this.productPrice.isEmpty();
+        return Objects.nonNull(this.productName) && Objects.nonNull(this.productPrice) && !this.productName.isEmpty() ;
     }
 }
