@@ -53,6 +53,7 @@ public class EbayScrapper implements Scrapper {
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .filter(Product::isValidProduct)
+                .limit(5)
                 .toList();
     }
 }

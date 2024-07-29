@@ -60,13 +60,13 @@ public class AmazonScrapper implements Scrapper {
 
                         return Optional.of(product);
                     } catch (Exception e) {
-                        LOGGER.severe("Error processing element: " + e.getMessage());
                         return Optional.empty();
                     }
                 })
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .filter(Product::isValidProduct)
+                .limit(5)
                 .toList();
     }
 }
