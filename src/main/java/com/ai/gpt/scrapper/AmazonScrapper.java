@@ -26,7 +26,7 @@ public class AmazonScrapper implements Scrapper {
 
     @Override
     public List<Product> scrap(String itemName) {
-        String formattedItemName = itemName.replace(" ", "+");
+        String formattedItemName = itemName.strip().replace(" ", "+");
         String formattedProductURL = PRODUCT_URL.replace("{productName}", formattedItemName);
         WebDriver webDriver = new ChromeDriver(chromeOptions);
         webDriver.get(formattedProductURL);
