@@ -47,7 +47,7 @@ public class AmazonScrapper implements Scrapper {
         final List<WebElement> elements = webDriver.findElements(By.cssSelector("div.puisg-row"));
 
         return elements
-                .stream()
+                .parallelStream()
                 .<Optional<Product>>map(webElement -> {
                     try {
                         final Product product = new Product();
@@ -59,7 +59,7 @@ public class AmazonScrapper implements Scrapper {
 
                         WebElement productURL = webElement.findElement(By.cssSelector("a.a-link-normal"));
                         product.setProductUrl(URLShortener.shortenURL(productURL.getAttribute("href")));
-
+                        // System.out.println("Amazon Scrapping..."+ Thread.currentThread().getName());
                         return Optional.of(product);
                     } catch (Exception e) {
                         return Optional.empty();
@@ -67,7 +67,6 @@ public class AmazonScrapper implements Scrapper {
                 })
                 .filter(Optional::isPresent)
                 .map(Optional::get)
-                .filter(Product::isValidProduct)
-                .limit(2);
+                .filter(Product::isValidProduct);
     }
 }

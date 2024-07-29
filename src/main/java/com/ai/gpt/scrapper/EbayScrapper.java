@@ -32,9 +32,8 @@ public class EbayScrapper implements Scrapper {
 
         final List<WebElement> elements = webDriver.findElements(By.cssSelector("li.s-item.s-item__pl-on-bottom"));
 
-        //        webDriver.close();
         return elements
-                .stream()
+                .parallelStream()
                 .<Optional<Product>>map(webElement -> {
                     try {
                         final Product product = new Product();
@@ -46,7 +45,7 @@ public class EbayScrapper implements Scrapper {
 
                         WebElement productURL = webElement.findElement(By.cssSelector(".s-item__link"));
                         product.setProductUrl(URLShortener.shortenURL(productURL.getAttribute("href")));
-
+                        // System.out.println("Ebay Scrapping..." + Thread.currentThread().getName());
                         return Optional.of(product);
                     } catch (NoSuchElementException ignored) {
                         return Optional.empty();
@@ -54,7 +53,6 @@ public class EbayScrapper implements Scrapper {
                 })
                 .filter(Optional::isPresent)
                 .map(Optional::get)
-                .filter(Product::isValidProduct)
-                .limit(2);
+                .filter(Product::isValidProduct);
     }
 }

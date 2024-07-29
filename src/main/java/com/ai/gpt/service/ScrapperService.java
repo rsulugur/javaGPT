@@ -19,8 +19,9 @@ public class ScrapperService {
 
         return this.scrappers
                 .scrapperList()
-                .stream()
+                .parallelStream()
                 .flatMap(scrapper -> scrapper.scrap(productName))
+                .limit(20)
                 .peek(product -> product.setProductDescription(openAIService.sendMessage(product.getProductName())))
                 .sorted(sortByPrice.equalsIgnoreCase("asc") ? comparator : comparator.reversed())
                 .toList();
