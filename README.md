@@ -118,7 +118,7 @@ OpenAI is integrated to fill out the product description field. Currently, it re
 
 1. **Robot Detection**: CAPTCHA verification can cause Amazon scraping to fail sometimes.
 2. **OpenAI**: Currently set to return a dummy response for testing purposes.
-3. Availability - available / out of stock - Amazon and eBay Scrapping are unable to determine the product stock details as most of the products are available, and stock availability is not consistent from search page across platforms.
+3. Availability - available / out of stock - stock availability is inconsistent from the search page across platforms.
 
 ## SortByPrice
 
