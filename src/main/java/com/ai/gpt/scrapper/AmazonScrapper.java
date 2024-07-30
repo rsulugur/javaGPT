@@ -7,6 +7,7 @@ import com.ai.gpt.utils.URLShortener;
 import lombok.AllArgsConstructor;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -28,13 +29,11 @@ public class AmazonScrapper implements Scrapper {
 
     @Override
     public Stream<Product> scrap(String itemName, List<ErrorObject> errorObjects) {
-//        String formattedItemName = itemName.strip().replace(" ", "+");
-//        String formattedProductURL = PRODUCT_URL.replace("{productName}", formattedItemName);
         WebDriver webDriver = new ChromeDriver(chromeOptions);
         try {
             return initiateScrapping(webDriver, itemName).toList().stream();
-        } catch (Exception ex) {
-            errorObjects.add(new ErrorObject("Unable to execute Amazon Scrapping" + ex.getMessage()));
+        } catch (WebDriverException ex) {
+            errorObjects.add(new ErrorObject("Unable to execute Amazon Scrapping " + ex.getRawMessage()));
             return Stream.of();
         } finally {
             webDriver.quit();

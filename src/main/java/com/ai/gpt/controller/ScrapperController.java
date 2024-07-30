@@ -23,8 +23,8 @@ public class ScrapperController {
     @GetMapping("/ai/generate")
     @Tag(name = "ChatGPT Controller", description = "API for invoking OpenAI with Custom Search Parameters")
     public String generate(@RequestParam(value = "message", defaultValue = "Tell me a joke") String message) {
-//         return openAIService.sendMessage(message);
-        return "This is a demo response";
+         return openAIService.sendMessage(message);
+//        return "This is a demo response";
     }
 
     // , @RequestParam(required = false, defaultValue = "asc") String sortByPrice

@@ -5,10 +5,7 @@ import com.ai.gpt.model.Product;
 import com.ai.gpt.utils.PriceConverter;
 import com.ai.gpt.utils.URLShortener;
 import lombok.AllArgsConstructor;
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.springframework.stereotype.Component;
@@ -31,8 +28,8 @@ public class EbayScrapper implements Scrapper {
         try {
             webDriver.get(formattedProductURL);
             return initiateScrapping(webDriver).toList().stream();
-        } catch (Exception ex) {
-            errorObjects.add(new ErrorObject("Unable to execute Ebay Scrapping" + ex.getMessage()));
+        } catch (WebDriverException  ex) {
+            errorObjects.add(new ErrorObject("Unable to execute Ebay Scrapping " + ex.getRawMessage()));
             return Stream.of();
         } finally {
             webDriver.quit();
