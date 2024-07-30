@@ -33,12 +33,13 @@ H2 console can be accessed at:
 
 ### OpenAI Integration
 
-OpenAI is integrated to fill the description field of the product. Currently, it returns a dummy response for testing purposes.
+OpenAI is integrated to fill out the product description field. Currently, it returns a dummy response for testing purposes.
 
 ## Known Issues
 
 1. **Robot Detection**: CAPTCHA verification can cause Amazon scraping to fail sometimes.
 2. **OpenAI**: Currently set to return a dummy response for testing purposes.
+3. Availability - available / out of stock - Amazon and eBay Scrapping are unable to determine the product stock details as most of the products are available, and stock availability is not consistent from search page across platforms.
 
 ## SortByPrice
 
