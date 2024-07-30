@@ -13,7 +13,7 @@ public class OpenAIService {
 
     public String sendMessage(String productName) {
         try {
-//            return chatModel.call("only Generate 10 Word Description for Product" + productName);
+//            return chatModel.call("Generate 10 Word Description for Product" + productName);
             return "Described " + productName;
         } catch (Exception ex) {
             return null;

@@ -1,5 +1,6 @@
 package com.ai.gpt.scrapper;
 
+import com.ai.gpt.model.ErrorObject;
 import com.ai.gpt.model.Product;
 import com.ai.gpt.utils.PriceConverter;
 import com.ai.gpt.utils.URLShortener;
@@ -23,17 +24,26 @@ public class EbayScrapper implements Scrapper {
     private final ChromeOptions chromeOptions;
 
     @Override
-    public Stream<Product> scrap(String itemName) {
+    public Stream<Product> scrap(String itemName, List<ErrorObject> errorObjects) {
         String formattedItemName = itemName.strip().replace(" ", "+");
         String formattedProductURL = PRODUCT_URL.replace("{productName}", formattedItemName);
         WebDriver webDriver = new ChromeDriver(chromeOptions);
+        try {
+            webDriver.get(formattedProductURL);
+            return initiateScrapping(webDriver).toList().stream();
+        } catch (Exception ex) {
+            errorObjects.add(new ErrorObject("Unable to execute Ebay Scrapping" + ex.getMessage()));
+            return Stream.of();
+        } finally {
+            webDriver.quit();
+        }
+    }
 
-        webDriver.get(formattedProductURL);
-
+    private Stream<Product> initiateScrapping(WebDriver webDriver) {
         final List<WebElement> elements = webDriver.findElements(By.cssSelector("li.s-item.s-item__pl-on-bottom"));
 
         return elements
-                .parallelStream()
+                .stream()
                 .<Optional<Product>>map(webElement -> {
                     try {
                         final Product product = new Product();
@@ -53,6 +63,6 @@ public class EbayScrapper implements Scrapper {
                 })
                 .filter(Optional::isPresent)
                 .map(Optional::get)
-                .filter(Product::isValidProduct);
+                .filter(Product::isValidProduct).limit(5);
     }
 }

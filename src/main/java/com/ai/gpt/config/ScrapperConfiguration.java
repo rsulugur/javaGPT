@@ -17,8 +17,6 @@ public class ScrapperConfiguration {
 
     @Bean
     public ProductScrappers getAvailableScrappers() {
-        return new ProductScrappers(
-                List.of(ebayScrapper, amazonScrapper)
-        );
+        return new ProductScrappers(List.of( amazonScrapper, ebayScrapper));
     }
 }

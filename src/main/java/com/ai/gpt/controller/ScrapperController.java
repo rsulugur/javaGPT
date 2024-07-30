@@ -1,18 +1,20 @@
 package com.ai.gpt.controller;
 
+import com.ai.gpt.model.ErrorObject;
 import com.ai.gpt.model.Product;
 import com.ai.gpt.model.ProductRequest;
+import com.ai.gpt.model.ProductResponse;
 import com.ai.gpt.service.OpenAIService;
 import com.ai.gpt.service.ScrapperService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@Tag(name = "Product Controller", description = "API for managing products")
 public class ScrapperController {
 
     private final ScrapperService service;
@@ -25,9 +27,13 @@ public class ScrapperController {
         return "This is a demo response";
     }
 
+    // , @RequestParam(required = false, defaultValue = "asc") String sortByPrice
     @PostMapping("/v1/fetch/product")
     @Tag(name = "Product Scrapping Controller", description = "API for initiating and scraping products")
-    public List<Product> fetchProducts(@RequestBody ProductRequest request, @RequestParam(required = false, defaultValue = "asc") String sortByPrice) {
-        return service.scrapProductDetails(request.productName(), sortByPrice);
+    public ProductResponse fetchProducts(@RequestBody ProductRequest request) {
+        final List<ErrorObject> errorObjects = new ArrayList<>();
+        final List<Product> products = service.scrapProductDetails(request, errorObjects);
+        final ProductResponse.ProductResponseBuilder productResponse = ProductResponse.builder();
+        return productResponse.productList(products).errors(errorObjects).build();
     }
 }
