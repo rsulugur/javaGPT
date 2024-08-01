@@ -21,16 +21,25 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonIgnore
     private int id;
-    private String productName;
+
+    private String name;
+
     @Column(length = 250)
-    private String productUrl;
-    private Float productPrice;
+    private String url;
+
+    private Float price;
+
+    private String source;
+
+    private String logo;
+
     @Column(length = 2046)
-    private String productDescription;
+    private String desc;
+
     private Date createdAt = new Date();
 
     @JsonIgnore
     public boolean isValidProduct() {
-        return Objects.nonNull(this.productName) && Objects.nonNull(this.productPrice) && !this.productName.isEmpty();
+        return Objects.nonNull(this.name) && Objects.nonNull(this.price);
     }
 }

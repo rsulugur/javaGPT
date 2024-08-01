@@ -11,12 +11,12 @@ public class OpenAIService {
 
     private final OpenAiChatModel chatModel;
 
-    public String sendMessage(String productName) {
+    public String sendMessage(String query) {
         try {
-            return chatModel.call("Generate 10 Word Description for Product" + productName);
-//            return "Described " + productName;
+            return chatModel.call("Generate 10 Word Description for my Query" + query);
+//            return "Described " + query;
         } catch (Exception ex) {
-            return null;
+            return "Described " + query;
         }
     }
 }
